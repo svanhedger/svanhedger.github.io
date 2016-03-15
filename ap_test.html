@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AP Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/black-tie/jquery-ui.min.css" rel="stylesheet" type="text/css"></link>
+    <script src="jspsych-4.3/jspsych.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-likert.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-call-function.js"></script>
+    <link href="jspsych-4.3/css/jspsych.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script>
+      var userip;
+    </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script>
+      var subjectID;
+      var subjectCode;
+      var trialCount = 1;
+      var totalAbsCorrect = 0;
+      var totalScore = 0;
+      var totalOneOff = 0;
+      var scorePercent;
+      var folder = "ap_test_stimuli/";
+      
+      function mod(a, b) {
+        return ((a % b) + b) % b;
+      }
+      
+      function pitchDistance(a, b) {
+        return Math.min(mod(a - b, 12), mod(b - a, 12));
+      }
+      
+      var notesToInts = {
+        "C": 0,
+        "Cs": 1,
+        "D": 2,
+        "Ds": 3,
+        "E": 4,
+        "F": 5,
+        "Fs": 6,
+        "G": 7,
+        "Gs": 8,
+        "A": 9,
+        "As": 10,
+        "B": 11
+      };
+      
+      var timestamp = Date.now();
+      if (userip) {
+        userip = userip.replace(/:/g, ".");
+        subjectID = userip + "-" + timestamp;
+      } else {
+        subjectID = timestamp;
+      }
+      jsPsych.data.addProperties({subject: subjectID});
+      
+      var experiment = [];
+      
+      var preVolumeTest = {
+        type: "text",
+        text: '<p>This task requires your volume to be at a comfortable level. Press any key to begin the volume test.</p>',
+        timing_post_trial: 500
+      };
+      
+      experiment.push(preVolumeTest);
+      
+      var volumeTest = {
+        type: "single-audio",
+        stimuli: [folder + "volumetest.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        prompt: "<p>Please adjust your volume so that the sound currently being played is at a comfortable listening level.</p>",
+        timing_post_trial: 0
+      };
+      
+      experiment.push(volumeTest);
+      
+      var welcome = {
+        type: "text",
+        text: '<p>Welcome to the experiment.</p>' +
+              '<p>On each trial, you will hear a single tone and be asked to identify the name of the note within 5 seconds.</p>' +
+              '<p>When you are ready to begin, press any key.</p>',
+        timing_post_trial: 500
+      };
+      
+      experiment.push(welcome);
+      
+      var allStimuli = [];
+      var lowFiles = ['sA0.wav', 'sAs0.wav', 'sB0.wav', 'sC0.wav', 'sCs0.wav', 'sD0.wav', 'sDs0.wav', 'sE0.wav', 'sF0.wav', 'sFs0.wav', 'sG0.wav', 'sGs0.wav', 'tA0.wav', 'tAs0.wav', 'tB0.wav', 'tC0.wav', 'tCs0.wav', 'tD0.wav', 'tDs0.wav', 'tE0.wav', 'tF0.wav', 'tFs0.wav', 'tG0.wav', 'tGs0.wav'];
+      var highFiles = ['sA1.wav', 'sAs1.wav', 'sB1.wav', 'sC1.wav', 'sCs1.wav', 'sD1.wav', 'sDs1.wav', 'sE1.wav', 'sF1.wav', 'sFs1.wav', 'sG1.wav', 'sGs1.wav', 'tA1.wav', 'tAs1.wav', 'tB1.wav', 'tC1.wav', 'tCs1.wav', 'tD1.wav', 'tDs1.wav', 'tE1.wav', 'tF1.wav', 'tFs1.wav', 'tG1.wav', 'tGs1.wav'];
+      
+      lowFiles = jsPsych.randomization.shuffle(lowFiles);
+      highFiles = jsPsych.randomization.shuffle(highFiles);
+      var numFilePairs = lowFiles.length;
+      var lowFirst = Math.floor(Math.random() * 2);
+      
+      if (lowFirst) {
+        for (var i = 0; i < numFilePairs; i += 1) {
+          allStimuli.push(folder + lowFiles[i]);
+          allStimuli.push(folder + highFiles[i]);
+        }
+      } else {
+        for (var i = 0; i < numFilePairs; i += 1) {
+          allStimuli.push(folder + highFiles[i]);
+          allStimuli.push(folder + lowFiles[i]);
+        }
+      }
+      
+      // allStimuli = allStimuli.slice(0, 2);  // uncomment for testing
+      var numFiles = allStimuli.length;
+      
+      var trialCountDisplay = {
+        type: "single-stim",
+        stimuli: function () {
+          return '<p>Trial ' + trialCount + ' of ' + numFiles + '</p>';
+        },
+        is_html: true,
+        timing_response: 900,
+        response_ends_trial: false,
+        timing_post_trial: 100
+      };
+      
+      var fixation = {
+        type: "multi-stim-multi-response",
+        stimuli: [["***", "**", "*"]],
+        is_html: true,
+        timing_stim: [500, 500, 500],
+        timing_response: 1500,
+        choices: [null, null, null],
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+      
+      /*
+      var whiteNoise = {
+        type: "single-audio",
+        stimuli: [folder + "whitenoise.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      */
+      
+      for (var i = 0; i < numFiles; i += 1) {
+        var stimulus = allStimuli[i];
+        var fileName = stimulus.split("/")[1];
+        var timbre = fileName.slice(0, 1);
+        var noteName = fileName.slice(1).slice(0, -5);
+        var octave = fileName.slice(-5, -4);
+        var correctAnswer = notesToInts[noteName];
+        
+        var audio = {
+          type: "single-audio",
+          stimuli: [stimulus],
+          timing_response: 1000,
+          response_ends_trial: false,
+          timing_post_trial: 0
+        };
+                
+        var response = {
+          type: "survey-likert",
+          questions: [['Please click on the name of the note you just heard, then click on the "Submit" button. This screen will time out after 5 seconds.']],
+          labels: [[['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']]],
+          intervals: [[12]],
+          data: [{
+            timbre: timbre,
+            note_name: noteName,
+            octave: octave,
+            correct_answer: correctAnswer
+          }],
+          on_finish: function (trialData) {
+            var correctAnswer = trialData.correct_answer;
+            var wasCorrect = false;
+            var wasOffByOne = false;
+            var answer = JSON.parse(trialData.responses).Q0;
+            var numAnswer;
+            if (answer) {
+              trialCount += 1;
+              numAnswer = answer - 1;  // jsPsych's likert scale starts at 1
+              wasCorrect = (numAnswer === correctAnswer);
+              if (wasCorrect) {
+                totalAbsCorrect += 1;
+                totalScore += 1;
+              } else {
+                wasOffByOne = (pitchDistance(numAnswer, correctAnswer) === 1);
+                if (wasOffByOne) {
+                  totalOneOff += 1;
+                  totalScore += 0.5;
+                }
+              }
+            } else {
+              numAnswer = "";
+            }
+            jsPsych.data.addDataToLastTrial({
+              answer: numAnswer,
+              was_correct: (wasCorrect ? 1 : 0),
+              was_off_by_one: (wasOffByOne ? 1: 0),
+              total_abs_correct: totalAbsCorrect,
+              total_one_off: totalOneOff,
+              total_score: totalScore
+            });
+          },
+          timing_post_trial: 500,
+          timing_response: 5000
+        };
+        
+        var chunk = {
+          chunk_type: "linear",
+          timeline: [trialCountDisplay, fixation, audio, response],
+        };
+        
+        experiment.push(chunk);
+      }
+      
+      var dataBlock = {
+        type: "call-function",
+        func: function () {
+          var subjectPrefix;
+          var re;
+          var csvData = jsPsych.data.dataAsCSV();
+          console.log(csvData);
+          scorePercent = (totalScore / numFiles) * 100;
+          if (scorePercent >= 80) {
+            subjectPrefix = "A";
+          } else if (scorePercent >= 60) {
+            subjectPrefix = "B";
+          } else if (scorePercent >= 40) {
+            subjectPrefix = "C";
+          } else {
+            subjectPrefix = "D";
+          }
+          subjectCode = subjectPrefix + "-" + subjectID;
+          
+          re = new RegExp('"' + subjectID + '"', "g");
+          csvData = csvData.replace(re, '"' + subjectCode + '"');
+          
+          var formData = {
+            exp: "AP_Screening_Test",  // comment out for testing
+            // exp: "TEST",  // uncomment for testing
+            subj: subjectCode,
+            results: csvData
+          };
+          $.post(
+            "http://perfectpitchstudies.pythonanywhere.com/data",
+            formData
+          );
+          $.post(
+            "http://205.208.68.176/data",
+            formData
+          );
+          $.post(
+            "http://205.208.93.97/data",
+            formData
+          );
+        },
+        timing_post_trial: 0
+      };
+      
+      experiment.push(dataBlock);
+      
+      var goodbye = {
+        type: "single-stim",
+        stimuli: function () {
+          var pageText = '<p>You got a final score of ' + scorePercent + '%. ' +
+                         'Out of ' + numFiles + ' trials, you were correct ' + totalAbsCorrect + ' time' + (totalAbsCorrect === 1 ? '' : 's') + ' and were off by only one semitone ' + totalOneOff + ' time' + (totalOneOff === 1 ? '' : 's') + '.</p>' +
+                         '<p>Below is your unique subject code for participating in any of our experiments. Please copy it.</p>' +
+                         '<p>' + subjectCode + '</p>';
+          return [pageText];
+        },
+        is_html: true,
+        response_ends_trial: false
+      };
+      
+      experiment.push(goodbye);
+      
+      jsPsych.init({
+        experiment_structure: experiment
+      });
+    </script>
+  </body>
+</html>
