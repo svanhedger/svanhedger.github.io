@@ -133,7 +133,7 @@
           var csvData = jsPsych.data.dataAsCSV();
           console.log(csvData);
           var formData = {
-            exp: "TEST",
+            exp: "SENTENCE_AAE",
             subj: subjectID,
             results: csvData
           };
@@ -141,6 +141,10 @@
             "http://perfectpitchstudies.pythonanywhere.com/data",
             formData
           );
+		  $.post(
+            "http://svanhedger.pythonanywhere.com/data",
+            formData
+          ); 
         },
         timing_post_trial: 0
       };
@@ -148,6 +152,8 @@
       var goodbye = {
         type: "text",
         text: '<p>You are finished.</p><p>Thank you for participating in this experiment.</p>'
+		'<p>Below is your unique subject code for participating in any of our experiments. Please copy it and paste it into the appropriate box to receive credit</p>' +
+                         '<p>' + subjectCode + '</p>';
       };
       
       timeline.push(dataBlock);

@@ -243,7 +243,7 @@
           csvData = csvData.replace(re, '"' + subjectCode + '"');
           
           var formData = {
-            exp: "AP_Screening_Test",  // comment out for testing
+            exp: "APTEST",  // comment out for testing
             // exp: "TEST",  // uncomment for testing
             subj: subjectCode,
             results: csvData
@@ -253,7 +253,7 @@
             formData
           );
           $.post(
-            "http://205.208.68.176/data",
+            "http://svanhedger.pythonanywhere.com/data",
             formData
           );
           $.post(
