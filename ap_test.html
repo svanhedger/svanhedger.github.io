@@ -220,6 +220,19 @@
         experiment.push(chunk);
       }
       
+	  var questionnaire = {
+        type: "survey-text",
+        preamble: ['Please answer the following questions:'],
+        questions: [[
+          'At what age (in years) did you first begin musical instruction?',
+          'Did you grow up speaking a tonal language? Tonal languages include Mandarin, Cantonese, Vietnamese, and Thai.',
+          'What is your current age (in years)?',
+          'If you would like to be notified of future studies, please enter your email address in the space provided. Otherwise, you may leave this blank.'
+        ]],
+		};
+		
+		experiment.push(questionnaire)
+	  
       var dataBlock = {
         type: "call-function",
         func: function () {
@@ -270,8 +283,8 @@
         type: "single-stim",
         stimuli: function () {
           var pageText = '<p>You got a final score of ' + scorePercent + '%. ' +
-                         'Out of ' + numFiles + ' trials, you were correct ' + totalAbsCorrect + ' time' + (totalAbsCorrect === 1 ? '' : 's') + ' and were off by only one semitone ' + totalOneOff + ' time' + (totalOneOff === 1 ? '' : 's') + '.</p>' +
-                         '<p>Below is your unique subject code for participating in any of our experiments. Please copy it.</p>' +
+                         'Out of ' + numFiles + ' trials, you were correct ' + totalAbsCorrect + ' time' + (totalAbsCorrect === 1 ? '' : 's') + ' and were off by one semitone ' + totalOneOff + ' time' + (totalOneOff === 1 ? '' : 's') + '.</p>' +
+                         '<p>Below is your unique subject code. If you wish to participate in any of our future studies, please copy this code at this time. You may need to reference this code to access future studies.</p>' +
                          '<p>' + subjectCode + '</p>';
           return [pageText];
         },
