@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pitch Memory</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/black-tie/jquery-ui.min.css" rel="stylesheet" type="text/css"></link>    <script src="jspsych-4.3/jspsych.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-likert.js"></script>
+    <link href="jspsych-4.3/css/jspsych.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script>
+      var userip;
+    </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script>
+      var i;
+      var subjectID;
+      var totalCorrect = 0;
+	  var totalCorrectFamiliar = 0;
+	  var totalRecognized = 0;
+      var folder = "MIDI_Songs/";
+      
+      var timestamp = Date.now();
+      if (userip) {
+        userip = userip.replace(/:/g, ".");
+        subjectID = userip + "-" + timestamp;
+      } else {
+        subjectID = timestamp;
+      }
+      
+      var condition = Math.floor(Math.random() * 4) + 1;
+      
+      jsPsych.data.addProperties({
+        subject: subjectID,
+        condition: condition
+      });
+      
+      var experiment = [];
+      
+      var consent = {
+        type: "text",
+        text: '<p>Please press any key to continue onto the experiment. </p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(consent);
+      
+      var volumeTest = {
+        type: "single-audio",
+        stimuli: [folder + "volumetest.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        prompt: "<p>Before we begin, please adjust your volume so that the sound currently being played is at a comfortable listening level.</p>",
+        timing_post_trial: 0
+      };
+      
+      experiment.push(volumeTest);
+      
+      var welcome = {
+        type: "text",
+        text: '<p>Welcome to the experiment.</p>' +
+              '<p>In this experiment, you will make judgments about various recordings that you hear.</p>' +
+              '<p>On each trial, you will hear two short versions of a popular musical melody (e.g., a popular song or movie theme melody). These melodies will be played on a piano. One of the two versions will be played at the "correct" pitch, while the other version will be played at an "incorrect" pitch.</p>' +
+			  '<p>Your task is to judge whether you think the first or the second version sounds "correct."</p>' +
+              '<p>There will be 8 different melodies that you will judge, and the experiment will take around 10 minutes to complete.</p>' +
+              '<p>For reference, a "correct" version will use the exact same pitches as the recording that you would hear outside of this experiment. An "incorrect" version will use different pitches and thus sound "too high" or "too low" compared to the recording that you would hear outside of this experiment.</p>' +
+              '<p>While this may seem like a difficult task, please make your best guess on each trial. To hear an example of what is meant by "correct" and "incorrect," press any key.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(welcome);
+      
+      var exampleCorrect = {
+        type: "single-audio",
+        stimuli: [folder + '44_0.wav'],
+        prompt: '<p>This version of "Gangam Style" by the artist Psy is "correct"</p>' + 
+                '<p>In other words, these are the same musical notes that comprise this melody outside of the experiment (e.g., the recording heard on the radio).</p>',
+        timing_response: 15000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(exampleCorrect);
+      
+      var exampleIncorrect = {
+        type: "single-audio",
+        stimuli: [folder + '44_1.wav'],
+        prompt: '<p>This version of "Gangam Style" by the artist Psy is "incorrect"</p>' +
+                '<p>Notice how it sounds "too high" compared to the "correct" version.</p>',
+        timing_response: 15000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(exampleIncorrect);
+      
+      var welcome2 = {
+        type: "text",
+        text: 'You are now ready to begin. Remember, your job is to make your best guess as to which of the two melody versions you hear is at the "correct" pitch. </p>' +
+		'<p>Do NOT check your answers during the experiment (e.g., through listening to the original recording in another browser or tab). Solely rely on your memory for each melody.' +
+		'<p> '+
+		'</p><p>Also remember that all melodies (both "correct" and "incorrect") will be played on a piano.' +
+		'<p> When you are ready to begin, press any key.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(welcome2);
+      
+      var files;
+      var filePaths = [];
+      
+      if (condition === 1) {
+        files = ['f49_1.wav', 'f30_-1.wav', 's47_1.wav', 's54_-1.wav', 'f21_1.wav', 'f32_-1.wav', 's22_1.wav', 's27_-1.wav'];
+      } else if (condition === 2) {
+        files = ['f49_-1.wav', 'f30_1.wav', 's47_-1.wav', 's54_1.wav', 'f21_-1.wav', 'f32_1.wav', 's22_-1.wav', 's27_1.wav'];
+      } else if (condition === 3) {
+        files = ['s49_1.wav', 's30_-1.wav', 'f47_1.wav', 'f54_-1.wav', 's21_1.wav', 's32_-1.wav', 'f22_1.wav', 'f27_-1.wav'];
+      } else {
+        files = ['s49_-1.wav', 's30_1.wav', 'f47_-1.wav', 'f54_1.wav', 's21_-1.wav', 's32_1.wav', 'f22_-1.wav', 'f27_1.wav'];
+      }
+            
+      // files = files.slice(0, 2);  // uncomment for testing final screens
+      
+      var numFiles = files.length;
+      
+      for (i = 0; i < numFiles; i += 1) {
+        filePaths.push(folder + encodeURIComponent(files[i]));
+      }
+      
+      var allStimuli = jsPsych.randomization.shuffle(filePaths);
+      
+      var fixation = {
+        type: "multi-stim-multi-response",
+        stimuli: [["***", "**", "*"]],
+        is_html: true,
+        timing_stim: [500, 500, 500],
+        timing_response: 1500,
+        choices: [null, null, null],
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+      
+      var familiarity = {
+        type: "survey-likert",
+        questions: [['Do you recognize this melody?', 'How familiar are you with this melody?']],
+        labels: [[['no', 'yes'], ['not familiar', 'very familiar']]],
+        intervals: [[2, 5]],
+        on_finish: function (trialData) {
+          var answers = JSON.parse(trialData.responses);
+          jsPsych.data.addDataToLastTrial({
+            familiar_no_yes: answers.Q0,
+            familiar_1_to_5: answers.Q1
+          });
+        },
+        timing_post_trial: 2000
+      };
+      
+      /*
+      var whiteNoise = {
+        type: "single-audio",
+        stimuli: [folder + "whitenoise.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      */
+      
+      for (i = 0; i < numFiles; i += 1) {
+        var timbre;
+        var stimulus = allStimuli[i];
+        
+        var trial = {
+          type: "single-audio",
+          stimuli: [stimulus],
+          timing_response: 36100,
+          response_ends_trial: false,
+          timing_post_trial: 0
+        };
+        
+        var filePath = decodeURIComponent(stimulus);
+        var correct = (filePath.indexOf("/s") > -1) ? "out" : "in";
+        var correctKeyPress = (correct === "in") ? 49 : 50;
+        
+        var response = {
+          type: "single-stim",
+          stimuli: ['<p>Was the first or the second version correct?</p>' +
+                    '<p>(Press "1" if you thought the first version was correct. Press "2" if you thought the second version was correct.)</p>' +
+                    '<p>Please make your best guess.</p>'],
+          is_html: true,
+          choices: ["1", "2"],  // 1 is 49, 2 is 50
+          data: [{
+            file: filePath,
+            correct: correct,
+            correct_key_press: correctKeyPress,
+            timbre: timbre
+          }],
+          on_finish: function (trialData) {
+            var keyPress = trialData.key_press;
+            var wasCorrect = (keyPress === trialData.correct_key_press);
+			var StimFamiliarity = (trialData.familiar_no_yes === "2");
+            if (wasCorrect) {
+              totalCorrect += 1;
+            }
+			if (StimFamiliarity) {
+              totalRecognized += 1;
+            }
+			if (wasCorrect && StimFamiliarity) {
+              totalCorrectFamiliar += 1;
+            }
+            jsPsych.data.addDataToLastTrial({
+              was_correct: (wasCorrect ? 1 : 0),
+              total_correct: totalCorrect,
+			  total_correct_familiar: totalCorrectFamiliar,
+			  total_recognized: totalRecognized
+            });
+          },
+          timing_post_trial: 0
+        };
+        
+        experiment.push(fixation);
+        experiment.push(trial);
+        experiment.push(response);
+        experiment.push(familiarity);
+        /*
+        experiment.push(whiteNoise);
+        */
+      }
+      
+      var questionnaire = {
+        type: "survey-text",
+        preamble: ['The following is a questionnaire to gauge your musical experience.'],
+        questions: [[
+          'Have you ever played a musical instrument?',
+		  'At what age did you first begin musical instruction? If you do not have any musical training, you may leave this question blank.',
+          'Do you have absolute pitch? (Absolute pitch is generally defined as the ability to name or produce any musical note without the aid of a reference note)'
+        ]],
+        on_finish: function () {
+          var csvData = jsPsych.data.dataAsCSV();
+          console.log(csvData);
+          var formData = {
+            exp: "PITCH_MEMORY_MIDI_WEBSITE",  // comment out for testing
+            // exp: "TEST",  // uncomment for testing
+            subj: subjectID,
+            results: csvData
+          };
+          $.post(
+            "http://perfectpitchstudies.pythonanywhere.com/data",
+            formData
+          );
+          $.post(
+            "http://svanhedger.pythonanywhere.com/data",
+            formData
+          );
+        }
+      };
+      
+      experiment.push(questionnaire);
+      
+      var goodbye = {
+        type: "single-stim",
+        stimuli: function () {
+          var pageText = '<p>This concludes the experiment. Thank you for your participation.</p>' +
+                         '<p>You chose the correct melody ' + totalCorrect + ' out of 8 times. </p>' +
+						 '<p>Of the ' + totalRecognized + ' melodies you recognized, you chose the correct version ' + totalCorrectFamiliar + ' times.</p>' +
+						 '<p>You may close out of this window at this time.</p>';                      
+          return [pageText];
+        },
+        is_html: true,
+        response_ends_trial: false
+      };
+      
+      experiment.push(goodbye);
+      
+      jsPsych.init({
+        experiment_structure: experiment
+      });
+    </script>
+  </body>
+</html>
