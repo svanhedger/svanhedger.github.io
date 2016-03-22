@@ -27,12 +27,9 @@
       var folder = "MIDI_Songs/";
       
       var timestamp = Date.now();
-      if (userip) {
-        userip = userip.replace(/:/g, ".");
-        subjectID = userip + "-" + timestamp;
-      } else {
-        subjectID = timestamp;
-      }
+
+      subjectID = timestamp;
+      
       
       var condition = Math.floor(Math.random() * 4) + 1;
       
