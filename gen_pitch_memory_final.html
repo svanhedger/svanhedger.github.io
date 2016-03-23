@@ -25,6 +25,7 @@
 	  var totalCorrectFamiliar = 0;
 	  var totalRecognized = 0;
       var folder = "MIDI_Songs/";
+
       
       var timestamp = Date.now();
 
@@ -143,20 +144,9 @@
         timing_post_trial: 0
       };
       
-      var familiarity = {
-        type: "survey-likert",
-        questions: [['Do you recognize this melody?', 'How familiar are you with this melody?']],
-        labels: [[['no', 'yes'], ['not familiar', 'very familiar']]],
-        intervals: [[2, 5]],
-        on_finish: function (trialData) {
-          var answers = JSON.parse(trialData.responses);
-          jsPsych.data.addDataToLastTrial({
-            familiar_no_yes: answers.Q0,
-            familiar_1_to_5: answers.Q1
-          });
-        },
-        timing_post_trial: 2000
-      };
+	    
+	  
+      
       
       /*
       var whiteNoise = {
@@ -180,49 +170,52 @@
           timing_post_trial: 0
         };
         
-        var filePath = decodeURIComponent(stimulus);
-        var correct = (filePath.indexOf("/s") > -1) ? "out" : "in";
-        var correctKeyPress = (correct === "in") ? 49 : 50;
-        
-        var response = {
-          type: "single-stim",
-          stimuli: ['<p>Was the first or the second version correct?</p>' +
-                    '<p>(Press "1" if you thought the first version was correct. Press "2" if you thought the second version was correct.)</p>' +
-                    '<p>Please make your best guess.</p>'],
-          is_html: true,
-          choices: ["1", "2"],  // 1 is 49, 2 is 50
-          data: [{
+	    var filePath = decodeURIComponent(stimulus);
+        var correct = (filePath.indexOf("/s") > -1) ? "second" : "first";
+        var correctKeyPress = (correct === "first") ? 1 : 2;  
+      
+	var familiarity = {
+        type: "survey-likert",
+        questions: [['Was the first or the second version correct?', 'Do you recognize this melody (i.e., have you heard this melody outside of this experiment)?', 'How familiar are you with this melody?']],
+        labels: [[['first', 'second'], ['no', 'yes'], ['not at all familiar', 'somewhat familiar', 'very familiar']]],
+        intervals: [[2, 2, 5]],
+		is_html: true,
+		data: [{
             file: filePath,
             correct: correct,
-            correct_key_press: correctKeyPress,
-            timbre: timbre
+            correct_key_press: correctKeyPress
           }],
-          on_finish: function (trialData) {
-            var keyPress = trialData.key_press;
-            var wasCorrect = (keyPress === trialData.correct_key_press);
-			var StimFamiliarity = (trialData.familiar_no_yes === "2");
-            if (wasCorrect) {
+        on_finish: function (trialData) {
+          var answers = JSON.parse(trialData.responses);
+		  var tuningjudgment = answers.Q0;
+		  var wasCorrect = (tuningjudgment == trialData.correct_key_press);
+		  if (wasCorrect) {
               totalCorrect += 1;
             }
-			if (StimFamiliarity) {
-              totalRecognized += 1;
-            }
-			if (wasCorrect && StimFamiliarity) {
+		  if (wasCorrect && answers.Q1 == 2) {
               totalCorrectFamiliar += 1;
             }
-            jsPsych.data.addDataToLastTrial({
-              was_correct: (wasCorrect ? 1 : 0),
-              total_correct: totalCorrect,
-			  total_correct_familiar: totalCorrectFamiliar,
-			  total_recognized: totalRecognized
-            });
-          },
-          timing_post_trial: 0
-        };
-        
+		  if (answers.Q1 == 2) {
+              totalRecognized += 1;
+            }
+          jsPsych.data.addDataToLastTrial({
+            tuning_judgment: tuningjudgment,
+			familiar_no_yes: answers.Q1,
+            familiar_1_to_5: answers.Q2,
+			was_correct: (wasCorrect ? 1 : 0),
+            total_correct: totalCorrect,
+			total_correct_familiar: totalCorrectFamiliar,
+			total_recognized: totalRecognized
+          });	
+        },
+        timing_post_trial: 2000
+      };
+
+
+
+	  
         experiment.push(fixation);
         experiment.push(trial);
-        experiment.push(response);
         experiment.push(familiarity);
         /*
         experiment.push(whiteNoise);
@@ -234,6 +227,7 @@
         preamble: ['The following is a questionnaire to gauge your musical experience.'],
         questions: [[
           'Have you ever played a musical instrument?',
+		  'What would you consider your primary instrument? If you do not have any musical training, you may leave this question blank.',
 		  'At what age did you first begin musical instruction? If you do not have any musical training, you may leave this question blank.',
           'Do you have absolute pitch? (Absolute pitch is generally defined as the ability to name or produce any musical note without the aid of a reference note)'
         ]],
@@ -258,12 +252,14 @@
       };
       
       experiment.push(questionnaire);
+	  
+	  //jsPsych.data.localSave('pilotdata.csv', 'csv'); //Check data format before putting online
       
       var goodbye = {
         type: "single-stim",
         stimuli: function () {
           var pageText = '<p>This concludes the experiment. Thank you for your participation.</p>' +
-                         '<p>You chose the correct melody ' + totalCorrect + ' out of 8 times. </p>' +
+                         '<p>You chose the correct version ' + totalCorrect + ' out of 8 times. </p>' +
 						 '<p>Of the ' + totalRecognized + ' melodies you recognized, you chose the correct version ' + totalCorrectFamiliar + ' times.</p>' +
 						 '<p>You may close out of this window at this time.</p>';                      
           return [pageText];
