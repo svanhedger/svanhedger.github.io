@@ -42,8 +42,9 @@
       var experiment = [];
       
       var consent = {
-        type: "text",
-        text: '<p>Please press any key to continue onto the experiment. </p>',
+        type: "single-stim",
+        stimuli: [folder + "consent_website.png"],
+        prompt: '<p>Please wait for the consent form to load. If you agree, please press any key to continue on to the study.</p>',
         timing_post_trial: 1000
       };
       

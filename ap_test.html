@@ -64,7 +64,17 @@
       
       var experiment = [];
       
-      var preVolumeTest = {
+     
+	 var consent = {
+        type: "single-stim",
+        stimuli: [folder + "consent_website.png"],
+        prompt: '<p>Please wait for the consent form to load. If you agree, please press any key to continue on to the study.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(consent);
+
+	 var preVolumeTest = {
         type: "text",
         text: '<p>This task requires your volume to be at a comfortable level. Press any key to begin the volume test.</p>',
         timing_post_trial: 500
