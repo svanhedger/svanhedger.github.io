@@ -244,12 +244,12 @@
       var goodbye = {
         type: "single-stim",
         stimuli: function () {
-          var pageText = // '<p>You got ' + totalCorrect + ' out of ' + totalTrials + ' correct.</p>' +
-                         '<p>Thank you for completing the task. Your participant code is displayed below:</p>' +
+          var pageText =  '<p>Thank you for completing the task. Your participant code is displayed below:</p>' +
                          '<p>' + subjectID + '</p>' +
                          '<p>Please make sure that the experimenter copies down this code.</p>' +
-                         '<p>Afterwards, you may close out of this page.</p>'
+                         '<p>Afterwards, you may close out of this page.</p>' +
 						 '<p>' + totalCorrect + ' / ' + totalTrials + '</p>';
+                        
           return [pageText];
         },
         is_html: true,
