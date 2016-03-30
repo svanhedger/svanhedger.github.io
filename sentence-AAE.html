@@ -40,7 +40,22 @@
       
       // stimuli = stimuli.slice(0, 2);
       
-      
+var consent = {
+        type: "text",
+        text: '<p>Please read through this consent form. Please press any key to continue on to the study.</p></p></p>' + 
+				'<p>***	In this study, you will be asked to complete surveys and questionnaires, listen to and make judgments of sounds, speech or visual images and/or recall specific items. </p>' +
+				'<p>***	This is a one-session study. The estimated time to complete this study is approximately 25 minutes.  </p>' +
+				'<p>***	The research is being conducted with the goal of publication in academic journals and possibly presentation at academic conferences.  </p>' +
+				'<p>***	Following the principles espoused by The American Psychological Association and the National Institute of Health, the data collected as part of this research may be available to other investigators who request copies. All such data files will contain only the arbitrary ID numbers, thereby protecting the confidentiality of your data. </p>' +
+				'<p>***	You will be compensated $3 for your participation in this study. You may withdraw from the experiment at any point throughout the study without penalty and will receive compensation equal to (prorated for) the time you have participated.   </p></p></p>' +
+				'<p>***	Your participation in this study does not involve any physical risk or emotional risk to you beyond the risks of daily life. You have the right to withdraw your consent or discontinue participation at any time for any reason.  Your decision to withdraw will not involve any penalty or loss of benefits to which you are entitled.    </p>' +
+				'<p>***	The benefits of this study include the opportunity to contribute to research that will improve our understanding of cognitive processes.  </p></p>' +
+				'<p>***	Your name or other identifiers will not be attached to your answers so that your confidentiality can be maintained.  Your privacy will be ensured in that all data resulting from this study will be analyzed, written, and published in aggregate form.  </p></p>' +
+				'<p>***	Your participation is voluntary and refusal to participate does not involve any penalty.  You may discontinue participation at any time without penalty.  A copy of this consent document is available to you for your records if you so choose. </p>',
+        timing_post_trial: 1000
+      };
+	  
+	  
       var preVolumeTest = {
         type: "text",
         text: '<p>This task requires your volume to be at a comfortable level. Press any key to begin the volume test.</p>',
@@ -56,6 +71,7 @@
         timing_post_trial: 0
       };
       
+	  timeline.push(consent);
       timeline.push(preVolumeTest);
       timeline.push(volumeTest);
       
