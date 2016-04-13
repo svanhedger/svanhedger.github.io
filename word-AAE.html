@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Word AAE</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="jspsych-5.0.2/jspsych.js"></script>
+    <script src="jspsych-5.0.2/plugins/jspsych-text.js"></script>
+    <script src="jspsych-5.0.2/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-5.0.2/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych-5.0.2/plugins/jspsych-multi-stim-multi-response.js"></script>
+    <script src="jspsych-5.0.2/plugins/jspsych-call-function.js"></script>
+    <link href="jspsych-5.0.2/css/jspsych.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="jspsych-target">Loading resources. Please wait...</div>
+    <script>
+      var userip;
+    </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script>
+      var timeline = [];
+      
+      var timestamp = +new Date();
+      if (userip) {
+        userip = userip.replace(/:/g, ".");
+        subjectID = userip + "-" + timestamp;
+      } else {
+        subjectID = timestamp;
+      }
+      jsPsych.data.addProperties({subject: subjectID});
+      
+      var folder = "word-AAE-stimuli/";
+      var filenames = ['balloonC_Doubt_Dc.wav', 'balloonC_Doubt_Uc.wav', 'balloonC_Yuck_Dc.wav', 'balloonC_Yuck_Uc.wav', 'balloonDDc.wav', 'balloonDUc.wav', 'balloonUDc.wav', 'balloonUUc.wav', 'birdC_Doubt_Dc.wav', 'birdC_Doubt_Uc.wav', 'birdC_Yuck_Dc.wav', 'birdC_Yuck_Uc.wav', 'birdDDc.wav', 'birdDUc.wav', 'birdsC_Doubt_Dc.wav', 'birdsC_Doubt_Uc.wav', 'birdsC_Yuck_Dc.wav', 'birdsC_Yuck_Uc.wav', 'birdsDDc.wav', 'birdsDUc.wav', 'birdsUDc.wav', 'birdsUUc.wav', 'birdUDc.wav', 'birdUUc.wav', 'blimpC_Doubt_Dc.wav', 'blimpC_Doubt_Uc.wav', 'blimpC_Yuck_Dc.wav', 'blimpC_Yuck_Uc.wav', 'blimpDDc.wav', 'blimpDUc.wav', 'blimpUDc.wav', 'blimpUUc.wav', 'bugC_Doubt_Dc.wav', 'bugC_Doubt_Uc.wav', 'bugC_Yuck_Dc.wav', 'bugC_Yuck_Uc.wav', 'bugDDc.wav', 'bugDUc.wav', 'bugUDc.wav', 'bugUUc.wav', 'butterflyC_Doubt_Dc.wav', 'butterflyC_Doubt_Uc.wav', 'butterflyC_Yuck_Dc.wav', 'butterflyC_Yuck_Uc.wav', 'butterflyDDc.wav', 'butterflyDUc.wav', 'butterflyUDc.wav', 'butterflyUUc.wav', 'chimpC_Doubt_Dc.wav', 'chimpC_Doubt_Uc.wav', 'chimpC_Yuck_Dc.wav', 'chimpC_Yuck_Uc.wav', 'chimpDDc.wav', 'chimpDUc.wav', 'chimpUDc.wav', 'chimpUUc.wav', 'dolphinC_Doubt_Dc.wav', 'dolphinC_Doubt_Uc.wav', 'dolphinC_Yuck_Dc.wav', 'dolphinC_Yuck_Uc.wav', 'dolphinDDc.wav', 'dolphinDUc.wav', 'dolphinUDc.wav', 'dolphinUUc.wav', 'duckC_Doubt_Dc.wav', 'duckC_Doubt_Uc.wav', 'duckC_Yuck_Dc.wav', 'duckC_Yuck_Uc.wav', 'duckDDc.wav', 'duckDUc.wav', 'duckUDc.wav', 'duckUUc.wav', 'eagleC_Doubt_Dc.wav', 'eagleC_Doubt_Uc.wav', 'eagleC_Yuck_Dc.wav', 'eagleC_Yuck_Uc.wav', 'eagleDDc.wav', 'eagleDUc.wav', 'eagleUDc.wav', 'eagleUUc.wav', 'elevatorC_Doubt_Dc.wav', 'elevatorC_Doubt_Uc.wav', 'elevatorC_Yuck_Dc.wav', 'elevatorC_Yuck_Uc.wav', 'elevatorDDc.wav', 'elevatorDUc.wav', 'elevatorUDc.wav', 'elevatorUUc.wav', 'escalatorC_Doubt_Dc.wav', 'escalatorC_Doubt_Uc.wav', 'escalatorC_Yuck_Dc.wav', 'escalatorC_Yuck_Uc.wav', 'escalatorDDc.wav', 'escalatorDUc.wav', 'escalatorUDc.wav', 'escalatorUUc.wav', 'featherC_Doubt_Dc.wav', 'featherC_Doubt_Uc.wav', 'featherC_Yuck_Dc.wav', 'featherC_Yuck_Uc.wav', 'featherDDc.wav', 'featherDUc.wav', 'featherUDc.wav', 'featherUUc.wav', 'fireflyC_Doubt_Dc.wav', 'fireflyC_Doubt_Uc.wav', 'fireflyC_Yuck_Dc.wav', 'fireflyC_Yuck_Uc.wav', 'fireflyDDc.wav', 'fireflyDUc.wav', 'fireflyUDc.wav', 'fireflyUUc.wav', 'flagC_Doubt_Dc.wav', 'flagC_Doubt_Uc.wav', 'flagC_Yuck_Dc.wav', 'flagC_Yuck_Uc.wav', 'flagDDc.wav', 'flagDUc.wav', 'flagUDc.wav', 'flagUUc.wav', 'frisbeeC_Doubt_Dc.wav', 'frisbeeC_Doubt_Uc.wav', 'frisbeeC_Yuck_Dc.wav', 'frisbeeC_Yuck_Uc.wav', 'frisbeeDDc.wav', 'frisbeeDUc.wav', 'frisbeeUDc.wav', 'frisbeeUUc.wav', 'frogC_Doubt_Dc.wav', 'frogC_Doubt_Uc.wav', 'frogC_Yuck_Dc.wav', 'frogC_Yuck_Uc.wav', 'frogDDc.wav', 'frogDUc.wav', 'frogUDc.wav', 'frogUUc.wav', 'golfballC_Doubt_Dc.wav', 'golfballC_Doubt_Uc.wav', 'golfballC_Yuck_Dc.wav', 'golfballC_Yuck_Uc.wav', 'golfballDDc.wav', 'golfballDUc.wav', 'golfballUDc.wav', 'golfballUUc.wav', 'gooseC_Doubt_Dc.wav', 'gooseC_Doubt_Uc.wav', 'gooseC_Yuck_Dc.wav', 'gooseC_Yuck_Uc.wav', 'gooseDDc.wav', 'gooseDUc.wav', 'gooseUDc.wav', 'gooseUUc.wav', 'gorillaC_Doubt_Dc.wav', 'gorillaC_Doubt_Uc.wav', 'gorillaC_Yuck_Dc.wav', 'gorillaC_Yuck_Uc.wav', 'gorillaDDc.wav', 'gorillaDUc.wav', 'gorillaUDc.wav', 'gorillaUUc.wav', 'helicopterC_Doubt_Dc.wav', 'helicopterC_Doubt_Uc.wav', 'helicopterC_Yuck_Dc.wav', 'helicopterC_Yuck_Uc.wav', 'helicopterDDc.wav', 'helicopterDUc.wav', 'helicopterUDc.wav', 'helicopterUUc.wav', 'hikersC_Doubt_Dc.wav', 'hikersC_Doubt_Uc.wav', 'hikersC_Yuck_Dc.wav', 'hikersC_Yuck_Uc.wav', 'hikersDDc.wav', 'hikersDUc.wav', 'hikersUDc.wav', 'hikersUUc.wav', 'hotairballoonC_Doubt_Dc.wav', 'hotairballoonC_Doubt_Uc.wav', 'hotairballoonC_Yuck_Dc.wav', 'hotairballoonC_Yuck_Uc.wav', 'hotairballoonDDc.wav', 'hotairballoonDUc.wav', 'hotairballoonUDc.wav', 'hotairballoonUUc.wav', 'hummingbirdC_Doubt_Dc.wav', 'hummingbirdC_Doubt_Uc.wav', 'hummingbirdC_Yuck_Dc.wav', 'hummingbirdC_Yuck_Uc.wav', 'hummingbirdDDc.wav', 'hummingbirdDUc.wav', 'hummingbirdUDc.wav', 'hummingbirdUUc.wav', 'jetC_Doubt_Dc.wav', 'jetC_Doubt_Uc.wav', 'jetC_Yuck_Dc.wav', 'jetC_Yuck_Uc.wav', 'jetDDc.wav', 'jetDUc.wav', 'jetUDc.wav', 'jetUUc.wav', 'kiteC_Doubt_Dc.wav', 'kiteC_Doubt_Uc.wav', 'kiteC_Yuck_Dc.wav', 'kiteC_Yuck_Uc.wav', 'kiteDDc.wav', 'kiteDUc.wav', 'kiteUDc.wav', 'kiteUUc.wav', 'ladderC_Doubt_Dc.wav', 'ladderC_Doubt_Uc.wav', 'ladderC_Yuck_Dc.wav', 'ladderC_Yuck_Uc.wav', 'ladderDDc.wav', 'ladderDUc.wav', 'ladderUDc.wav', 'ladderUUc.wav', 'leafC_Doubt_Dc.wav', 'leafC_Doubt_Uc.wav', 'leafC_Yuck_Dc.wav', 'leafC_Yuck_Uc.wav', 'leafDDc.wav', 'leafDUc.wav', 'leafUDc.wav', 'leafUUc.wav', 'missileC_Doubt_Dc.wav', 'missileC_Doubt_Uc.wav', 'missileC_Yuck_Dc.wav', 'missileC_Yuck_Uc.wav', 'missileDDc.wav', 'missileDUc.wav', 'missileUDc.wav', 'missileUUc.wav', 'pilotC_Doubt_Dc.wav', 'pilotC_Doubt_Uc.wav', 'pilotC_Yuck_Dc.wav', 'pilotC_Yuck_Uc.wav', 'pilotDDc.wav', 'pilotDUc.wav', 'pilotUDc.wav', 'pilotUUc.wav', 'ramC_Doubt_Dc.wav', 'ramC_Doubt_Uc.wav', 'ramC_Yuck_Dc.wav', 'ramC_Yuck_Uc.wav', 'ramDDc.wav', 'ramDUc.wav', 'ramUDc.wav', 'ramUUc.wav', 'ropeC_Doubt_Dc.wav', 'ropeC_Doubt_Uc.wav', 'ropeC_Yuck_Dc.wav', 'ropeC_Yuck_Uc.wav', 'ropeDDc.wav', 'ropeDUc.wav', 'ropeUDc.wav', 'ropeUUc.wav', 'spaceshipC_Doubt_Dc.wav', 'spaceshipC_Doubt_Uc.wav', 'spaceshipC_Yuck_Dc.wav', 'spaceshipC_Yuck_Uc.wav', 'spaceshipDDc.wav', 'spaceshipDUc.wav', 'spaceshipUDc.wav', 'spaceshipUUc.wav', 'squirrelC_Doubt_Dc.wav', 'squirrelC_Doubt_Uc.wav', 'squirrelC_Yuck_Dc.wav', 'squirrelC_Yuck_Uc.wav', 'squirrelDDc.wav', 'squirrelDUc.wav', 'squirrelUDc.wav', 'squirrelUUc.wav', 'stairwayC_Doubt_Dc.wav', 'stairwayC_Doubt_Uc.wav', 'stairwayC_Yuck_Dc.wav', 'stairwayC_Yuck_Uc.wav', 'stairwayDDc.wav', 'stairwayDUc.wav', 'stairwayUDc.wav', 'stairwayUUc.wav', 'submarineC_Doubt_Dc.wav', 'submarineC_Doubt_Uc.wav', 'submarineC_Yuck_Dc.wav', 'submarineC_Yuck_Uc.wav', 'submarineDDc.wav', 'submarineDUc.wav', 'submarineUDc.wav', 'submarineUUc.wav', 'swingC_Doubt_Dc.wav', 'swingC_Doubt_Uc.wav', 'swingC_Yuck_Dc.wav', 'swingC_Yuck_Uc.wav', 'swingDDc.wav', 'swingDUc.wav', 'swingUDc.wav', 'swingUUc.wav', 'tarzanC_Doubt_Dc.wav', 'tarzanC_Doubt_Uc.wav', 'tarzanC_Yuck_Dc.wav', 'tarzanC_Yuck_Uc.wav', 'tarzanDDc.wav', 'tarzanDUc.wav', 'tarzanUDc.wav', 'tarzanUUc.wav', 'waterC_Doubt_Dc.wav', 'waterC_Doubt_Uc.wav', 'waterC_Yuck_Dc.wav', 'waterC_Yuck_Uc.wav', 'waterDDc.wav', 'waterDUc.wav', 'waterUDc.wav', 'waterUUc.wav', 'whaleC_Doubt_Dc.wav', 'whaleC_Doubt_Uc.wav', 'whaleC_Yuck_Dc.wav', 'whaleC_Yuck_Uc.wav', 'whaleDDc.wav', 'whaleDUc.wav', 'whaleUDc.wav', 'whaleUUc.wav'];
+
+      var stimuli = [];
+      for (var i = 0; i < filenames.length; i++) {
+        stimuli.push(folder + filenames[i]);
+      }
+      stimuli = jsPsych.randomization.shuffle(stimuli);
+      
+      // stimuli = stimuli.slice(0, 2);
+      
+	  
+	  var consent = {
+        type: "text",
+        text: '<p>Please read through this consent form. Please press any key to continue on to the study.</p></p></p>' + 
+				'<p>***	In this study, you will be asked to complete surveys and questionnaires, listen to and make judgments of sounds, speech or visual images and/or recall specific items. </p>' +
+				'<p>***	This is a one-session study. The estimated time to complete this study is approximately 20-25 minutes.  </p>' +
+				'<p>***	The research is being conducted with the goal of publication in academic journals and possibly presentation at academic conferences.  </p>' +
+				'<p>***	Following the principles espoused by The American Psychological Association and the National Institute of Health, the data collected as part of this research may be available to other investigators who request copies. All such data files will contain only the arbitrary ID numbers, thereby protecting the confidentiality of your data. </p>' +
+				'<p>***	You will be compensated $3.00 for your participation in this study. You may withdraw from the experiment at any point throughout the study without penalty and will receive compensation equal to (prorated for) the time you have participated.   </p></p></p>' +
+				'<p>***	Your participation in this study does not involve any physical risk or emotional risk to you beyond the risks of daily life. You have the right to withdraw your consent or discontinue participation at any time for any reason.  Your decision to withdraw will not involve any penalty or loss of benefits to which you are entitled.    </p>' +
+				'<p>***	The benefits of this study include the opportunity to contribute to research that will improve our understanding of cognitive processes.  </p></p>' +
+				'<p>***	Your name or other identifiers will not be attached to your answers so that your confidentiality can be maintained.  Your privacy will be ensured in that all data resulting from this study will be analyzed, written, and published in aggregate form.  </p></p>' +
+				'<p>***	Your participation is voluntary and refusal to participate does not involve any penalty.  You may discontinue participation at any time without penalty.  A copy of this consent document is available to you for your records if you so choose. </p>',
+        timing_post_trial: 1000
+      };
+      
+      var preVolumeTest = {
+        type: "text",
+        text: '<p>This task requires your volume to be at a comfortable level. Press any key to begin the volume test.</p>',
+        timing_post_trial: 500
+      };
+      
+      var volumeTest = {
+        type: "single-audio",
+        stimulus: folder + "volumetest.wav",
+        timing_response: 10000,
+        response_ends_trial: false,
+        prompt: "<p>Please adjust your volume so that the sound currently being played is at a comfortable listening level.</p>",
+        timing_post_trial: 0
+      };
+      
+	  timeline.push(consent);
+      timeline.push(preVolumeTest);
+      timeline.push(volumeTest);
+      
+      var welcomePages = [
+        '<p>Welcome to the experiment.</p><p>On each trial, you will hear a single word.</p><p>After each word you will be asked to make a<br>decision about the word you just heard.</p><p>(Press any key to continue)</p>',
+        '<p>If the word you hear is a "directional word" (such as "up" or "down"), press the space bar.</p><p>If the word you hear is not a "directional word,"<br>do not press anything.</p><p>(Press any key to continue)</p>',
+        '<p>Please respond as quickly and as accurately as possible.</p><p> When you are ready to hear the first word, press any key.'
+      ];
+      
+      for (var i = 0; i < welcomePages.length; i++) {
+        var welcome = {
+          type: "text",
+          text: welcomePages[i],
+          timing_post_trial: 0
+        };
+        timeline.push(welcome);
+      }
+      
+      var fixation = {
+        type: "multi-stim-multi-response",
+        stimuli: ["***", "**", "*"],
+        is_html: true,
+        timing_stim: [500, 500, 500],
+        timing_response: 1500,
+        choices: [null, null, null],
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+      
+      var shortBreak = {
+        type: "text",
+        text: "<p>Please take a short break.</p><p>(Press enter to resume the experiment)</p>",
+        cont_key: ["enter"]
+      };
+      
+      for (var i = 0; i < stimuli.length; i++) {
+        if (i % 80 === 0 && i > 0) {
+          timeline.push(shortBreak);
+        }
+        
+        var stim = stimuli[i];
+        var word;
+        var prosody;
+        if (stim.indexOf("C_Yuck_") > -1 || stim.indexOf("C_Doubt_") > -1) {
+          word = "(nonsense)";
+          prosody = "(nonsense)";
+        } else {
+          word = (stim.slice(-6, -5) === "D" ? "down" : "up");
+          prosody = (stim.slice(-5, -4) === "D" ? "down" : "up");
+        }
+        
+        var audio = {
+          type: "single-audio",
+          stimulus: stim,
+          choices: ["space"],
+          data: {
+            file: stim,
+            word: word,
+            prosody: prosody
+          },
+          timing_response: 2000,
+          response_ends_trial: false,
+          timing_post_trial: 0,
+        };
+        
+        timeline.push(fixation);
+        timeline.push(audio);
+      }
+      
+      var dataBlock = {
+        type: "call-function",
+        func: function () {
+          var csvData = jsPsych.data.dataAsCSV();
+          console.log(csvData);
+          var formData = {
+            exp: "WORD_AAE",
+            subj: subjectID,
+            results: csvData
+          };
+          $.post(
+            "http://perfectpitchstudies.pythonanywhere.com/data",
+            formData
+          );
+		  $.post(
+            "http://svanhedger.pythonanywhere.com/data",
+            formData
+          );
+		  $.post(
+            "http://205.208.68.176/data",
+            formData
+          );
+        },
+        timing_post_trial: 0
+      };
+      
+      var goodbye = {
+        type: "text",
+        text: '<p>You are finished.</p><p>Thank you for participating in this experiment.</p></p>Your code is ' + subjectID + '. Please paste this code into the appropriate box to receive credit. Press "Q" to exit out of this screen.',
+        cont_key: ['Q'],
+	 };
+      
+      timeline.push(dataBlock);
+      timeline.push(goodbye);
+      
+      jsPsych.init({
+        timeline: timeline,
+        display_element: $("#jspsych-target")
+      });
+    </script>
+  </body>
+</html>
