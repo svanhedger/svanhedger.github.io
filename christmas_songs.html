@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Christmas Songs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/black-tie/jquery-ui.min.css" rel="stylesheet" type="text/css"></link>    <script src="jspsych-4.3/jspsych.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-likert.js"></script>
+    <link href="jspsych-4.3/css/jspsych.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script>
+      var userip;
+    </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script>
+      var i;
+      var subjectID;
+      var totalCorrect = 0;
+      var folder = "christmas_songs/";
+      
+      var timestamp = Date.now();
+      if (userip) {
+        userip = userip.replace(/:/g, ".");
+        subjectID = userip + "-" + timestamp;
+      } else {
+        subjectID = timestamp;
+      }
+      
+      var condition = Math.floor(Math.random() * 4) + 1;
+      
+      jsPsych.data.addProperties({
+        subject: subjectID,
+        condition: condition
+      });
+      
+      var experiment = [];
+      
+      var consent = {
+        type: "single-stim",
+        stimuli: [folder + "consent.png"],
+        prompt: '<p>Please wait for the consent form to load. If you agree, please press any key to continue on to the study.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(consent);
+      
+      var volumeTest = {
+        type: "single-audio",
+        stimuli: [folder + "volumetest.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        prompt: "<p>Before we begin, please adjust your volume so that the sound currently being played is at a comfortable listening level.</p>",
+        timing_post_trial: 0
+      };
+      
+      experiment.push(volumeTest);
+      
+      var welcome = {
+        type: "text",
+        text: '<p>Welcome to the experiment.</p>' +
+              '<p>In this experiment, you will make judgments about various songs that you hear.</p>' +
+              '<p>On each trial, you will hear a short excerpt from a song. Sometimes, the excerpt will be "correct" in its tuning, while other times the excerpt will be "incorrect" in its tuning.  Your task is to judge whether you think the excerpt sounded "correct" or "incorrect."</p>' +
+              '<p>There will be 20 total excerpts that you will judge, and the experiment will take around 15 minutes to complete.</p>' +
+              '<p>For reference, a "correct" excerpt will use the exact same pitches as the original song that you would hear outside of this experiment. An "incorrect" excerpt will use different pitches and thus sound "too high" or "too low" compared to the original song that you would hear outside of this experiment.</p>' +
+              '<p>While this may seem like a difficult task, please make your best guess on each trial. To hear an example of what is meant by "correct" and "incorrect," press any key.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(welcome);
+      
+      var exampleCorrect = {
+        type: "single-audio",
+        stimuli: [folder + 'example0.wav'],
+        prompt: '<p>This is a sample song at its correct pitch.</p>' + 
+                '<p>In other words, this is how you would hear the song outside of this experiment (e.g., on the radio).</p>',
+        timing_response: 10000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(exampleCorrect);
+      
+      var exampleIncorrect = {
+        type: "single-audio",
+        stimuli: [folder + 'example-1.wav'],
+        prompt: '<p>This is an incorrect version of the same song.</p>' +
+                '<p>Notice how it sounds "too low" compared to the correct version of the song.</p>',
+        timing_response: 10000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(exampleIncorrect);
+      
+      var welcome2 = {
+        type: "text",
+        text: 'Remember, you will only hear one version of each song in the experiment. Make your best guess as to whether you are hearing a correct version or an incorrect version (which would sound "too high" or "too low").' +
+		'<p>Do NOT check your answers during the experiment (e.g., through listening to the song in another browser or tab). Solely rely on your memory for each song.' +
+		'<p> '+
+		'<p> When you are ready to begin, press any key.</p>',
+        timing_post_trial: 1000
+      };
+      
+      experiment.push(welcome2);
+      
+      var files;
+      var filePaths = [];
+      
+      if (condition === 1) {
+        files = ['1.wav', '2.wav', '4.wav', '6.wav', '9.wav', '11.wav', '15.wav', '16.wav', '17.wav', '18.wav', 'f19.wav', 'f20.wav', 'f21.wav', 'f22.wav', 'f23.wav', 's24.wav', 's25.wav', 's26.wav', 's27.wav', 's28.wav'];
+      } else if (condition === 2) {
+        files = ['1.wav', '2.wav', '4.wav', '6.wav', '9.wav', '11.wav', '15.wav', '16.wav', '17.wav', '18.wav', 's19.wav', 's20.wav', 's21.wav', 's22.wav', 's23.wav', 'f24.wav', 'f25.wav', 'f26.wav', 'f27.wav', 'f28.wav'];
+      } else if (condition === 3) {
+        files = ['s1.wav', 's2.wav', 's4.wav', 's6.wav', 's9.wav', 'f11.wav', 'f15.wav', 'f16.wav', 'f17.wav', 'f18.wav', '19.wav', '20.wav', '21.wav', '22.wav', '23.wav', '24.wav', '25.wav', '26.wav', '27.wav', '28.wav'];
+      } else {
+        files = ['f1.wav', 'f2.wav', 'f4.wav', 'f6.wav', 'f9.wav', 's11.wav', 's15.wav', 's16.wav', 's17.wav', 's18.wav', '19.wav', '20.wav', '21.wav', '22.wav', '23.wav', '24.wav', '25.wav', '26.wav', '27.wav', '28.wav'];
+      }
+            
+      // files = files.slice(0, 2);  // uncomment for testing final screens
+      
+      var numFiles = files.length;
+      
+      for (i = 0; i < numFiles; i += 1) {
+        filePaths.push(folder + encodeURIComponent(files[i]));
+      }
+      
+      var allStimuli = jsPsych.randomization.shuffle(filePaths);
+      
+      var fixation = {
+        type: "multi-stim-multi-response",
+        stimuli: [["***", "**", "*"]],
+        is_html: true,
+        timing_stim: [500, 500, 500],
+        timing_response: 1500,
+        choices: [null, null, null],
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+      
+      var familiarity = {
+        type: "survey-likert",
+        questions: [['Are you familiar with this version of this song?', 'How familiar are you with this version of the song?', "Approximately how long has it been since you've heard this version of the song?"]],
+        labels: [[['no', 'yes'], ['not familiar', 'very familiar'], ['less than a day', 'a day to a week', 'a week to a month', 'more than a month', 'N/A, never heard this version before']]],
+        intervals: [[2, 5, 5]],
+        on_finish: function (trialData) {
+          var answers = JSON.parse(trialData.responses);
+          jsPsych.data.addDataToLastTrial({
+            familiar_no_yes: answers.Q0,
+            familiar_1_to_5: answers.Q1,
+            last_heard: answers.Q2
+          });
+        },
+        timing_post_trial: 2000
+      };
+      
+      /*
+      var whiteNoise = {
+        type: "single-audio",
+        stimuli: [folder + "whitenoise.wav"],
+        timing_response: 10000,
+        response_ends_trial: false,
+        timing_post_trial: 1000
+      };
+      */
+      
+      for (i = 0; i < numFiles; i += 1) {
+        var timbre;
+        var stimulus = allStimuli[i];
+        
+        var trial = {
+          type: "single-audio",
+          stimuli: [stimulus],
+          timing_response: 10000,
+          response_ends_trial: false,
+          timing_post_trial: 0
+        };
+        
+        var filePath = decodeURIComponent(stimulus);
+        var correct = (filePath.indexOf("/f") > -1 || filePath.indexOf("/s") > -1) ? "out" : "in";
+        var correctKeyPress = (correct === "in") ? 81 : 80;
+        
+        var response = {
+          type: "single-stim",
+          stimuli: ['<p>Was the excerpt you just heard in-tune or out-of-tune?</p>' +
+                    '<p>(Press "q" if you thought the excerpt was in-tune. Press "p" if you thought the excerpt was out-of-tune.)</p>' +
+                    '<p>If you are not sure, please make your best guess.</p>'],
+          is_html: true,
+          choices: ["q", "p"],  // q is 81, p is 80
+          data: [{
+            file: filePath,
+            correct: correct,
+            correct_key_press: correctKeyPress,
+            timbre: timbre
+          }],
+          on_finish: function (trialData) {
+            var keyPress = trialData.key_press;
+            var wasCorrect = (keyPress === trialData.correct_key_press);
+            if (wasCorrect) {
+              totalCorrect += 1;
+            }
+            jsPsych.data.addDataToLastTrial({
+              was_correct: (wasCorrect ? 1 : 0),
+              total_correct: totalCorrect
+            });
+          },
+          timing_post_trial: 0
+        };
+        
+        experiment.push(fixation);
+        experiment.push(trial);
+        experiment.push(response);
+        experiment.push(familiarity);
+        /*
+        experiment.push(whiteNoise);
+        */
+      }
+      
+      var questionnaire = {
+        type: "survey-text",
+        preamble: ['The following is a questionnaire to gauge your musical experience and listening habits.'],
+        questions: [[
+          'Have you ever played a musical instrument?',
+          'Do you have absolute pitch?',
+          'How much do you actively seek out opportunities to listen to Christmas music? Please use the number keys 1 through 7 to make your response, with 1 corresponding to "not at all" and 7 corresponding to "extremely often."'
+        ]],
+        on_finish: function () {
+          var csvData = jsPsych.data.dataAsCSV();
+          console.log(csvData);
+          var formData = {
+            exp: "XMAS_SONGS",  // comment out for testing
+            // exp: "TEST",  // uncomment for testing
+            subj: subjectID,
+            results: csvData
+          };
+          $.post(
+            "http://perfectpitchstudies.pythonanywhere.com/data",
+            formData
+          );
+		  $.post(
+            "http://svanhedger.pythonanywhere.com/data",
+            formData
+          );
+          $.post(
+            "http://205.208.68.176/data",
+            formData
+          );
+        }
+      };
+      
+      experiment.push(questionnaire);
+      
+      var goodbye = {
+        type: "single-stim",
+        stimuli: function () {
+          var pageText = '<p>This concludes the experiment. Thank you for your participation.</p>' +
+                         '<p>Below is your subject ID. Please copy it.</p>' +
+                         '<p>' + subjectID + '</p>';
+          return [pageText];
+        },
+        is_html: true,
+        response_ends_trial: false
+      };
+      
+      experiment.push(goodbye);
+      
+      jsPsych.init({
+        experiment_structure: experiment
+      });
+    </script>
+  </body>
+</html>
