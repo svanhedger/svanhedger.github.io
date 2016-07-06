@@ -35,7 +35,7 @@
       var notes = ['C', 'Cs', 'D', 'Ds', 'E', 'F', 'Fs', 'G', 'Gs', 'A', 'As', 'B'];
       var stimuli = [];
       for (var i = 0; i < 12; i += 1) {
-        stimuli.push('tritone_stimuli/' + encodeURIComponent(notes[i] + '.wav'));
+        stimuli.push('music/' + encodeURIComponent(notes[i] + '.wav'));
       }
       
       var block1Stimuli = jsPsych.randomization.repeat(stimuli, 5);
