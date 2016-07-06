@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tritone Study</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="jspsych-4.3/jspsych.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-text.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-audio.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-single-stim.js"></script>
+    <script src="jspsych-4.3/plugins/jspsych-survey-text.js"></script>
+    <link href="jspsych-4.3/css/jspsych.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script>
+    
+    
+      var subjectID = Date.now();
+      jsPsych.data.addProperties({subject: subjectID});
+      
+      var condition_assignment = jsPsych.randomization.sample(['conditionBb', 'conditionE'],1)[0];
+      jsPsych.data.addProperties({condition: condition_assignment});
+      
+      var experiment = [];
+      
+      var welcome = {
+        type: "text",
+        text: "<p>Welcome to the experiment. This test should take 30 to 40 minutes to complete.</p>" +
+          "<p>For the first portion of the experiment, listen to determine whether the following two-note series are descending (going from high to low) or ascending (going from low to high).</p>" +
+          "<p>Press any key to begin.</p>",
+        timing_post_trial: 2000
+      };
+      
+      experiment.push(welcome);
+      
+      var notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      var stimuli = [];
+      for (var i = 0; i < 12; i += 1) {
+        stimuli.push('tritone_stimuli/' + encodeURIComponent(notes[i] + '.wav'));
+      }
+      
+      var block1Stimuli = jsPsych.randomization.repeat(stimuli, 5);
+      var block2Stimuli = jsPsych.randomization.repeat(stimuli, 5);
+      
+      var block1 = {
+        type: "single-audio",
+        stimuli: block1Stimuli,
+        choices: ["1", "2"],
+        prompt: "<p>Were the two notes descending (going from high to low) or ascending (going from low to high)?</p>" +
+                "<p>Press 1 for descending or 2 for ascending.</p>",
+        response_ends_trial: true,
+        timing_post_trial: 2000
+      };
+      
+      experiment.push(block1);
+      
+      
+      /*Give listening instructions*/
+      
+
+            
+      var listeningInstructions = {
+        type: "text",
+        text: "<p>You will now hear about 15 minutes of music in 3 sections.</p>" +
+              "<p>Please enjoy and be ready to answer questions about your experience after each section.</p>" +
+              "<p>Press any key to start the music.</p>",
+        timing_post_trial: 0
+      };
+        
+        experiment.push(listeningInstructions);
+      
+      /*Define which key*/
+      /*load the music*/
+
+      if(condition_assignment == 'conditionBb'){
+        musicStim1 = ['music/Bb1.mp3'];
+        length1 = 324000;
+        musicStim2 = ['music/Bb2.mp3'];
+        length2 = 171000;
+        musicStim3 = ['music/Bb3.mp3'];
+        length3 = 407000;
+        }
+     
+
+      else if(condition_assignment == 'conditionE'){
+        musicStim1 = ['music/E1.mp3'];
+        length1 = 308000;
+        musicStim2 = ['music/E2.mp3'];
+        length2 = 180000;
+        musicStim3 = ['music/E3.mp3'];
+        length3 = 413000;
+        }
+      
+   /*Stream the music for them*/
+
+      var musicBlock1 = {
+        type: "single-audio",
+        stimuli: musicStim1,
+        prompt: "Please listen and enjoy! There may be a few seconds of delay after the music ends, so just sit tight!",
+        timing_response: length1,
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+        experiment.push(musicBlock1);
+
+      
+      /*Ask them questions about the music*/
+
+      var question1 = {
+         type: "text",
+         text: "<p>On a scale of 1-5 (1 meaning not at all and 5 meaning very much) how much did you enjoy the music?</p>" +
+               "<p>Choose a number key (1, 2, 3, 4, or 5) to answer.</p>",
+         choices: ["1", "2", "3", "4", "5"],
+         response_ends_trial: true,
+         timing_post_trial: 2000
+      };
+        experiment.push(question1);
+
+      
+
+      var musicBlock2 = {
+        type: "single-audio",
+        stimuli: musicStim2,
+        prompt: "Please listen and enjoy! There may be a few seconds of delay after the music ends, so just sit tight!",
+        timing_response: length2,
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+        experiment.push(musicBlock2);
+      
+      /*Ask them questions about the music*/
+      var question2 = {
+         type: "text",
+         text: "<p>On a scale of 1-5 (1 meaning not at all and 5 meaning very much) how much did you enjoy the music?</p>" +
+               "<p>Choose a number key (1, 2, 3, 4, or 5) to answer.</p>",
+         choices: ["1", "2", "3", "4", "5"],
+         response_ends_trial: true,
+         timing_post_trial: 2000
+      };
+        experiment.push(question2);
+
+      
+      var musicBlock3 = {
+        type: "single-audio",
+        stimuli: musicStim3,
+        prompt: "Please listen and enjoy! There may be a few seconds of delay after the music ends, so just sit tight!", 
+        timing_response: length3,
+        response_ends_trial: false,
+        timing_post_trial: 0
+      };
+        experiment.push(musicBlock3);
+      
+      /*Ask them questions about the music*/
+      var question3 = {
+         type: "text",
+         text: "<p>On a scale of 1-5 (1 meaning not at all and 5 meaning very much) how much did you enjoy the music?</p>" +
+               "<p>Choose a number key (1, 2, 3, 4, or 5) to answer.</p>",
+         choices: ["1", "2", "3", "4", "5"],
+         response_ends_trial: true,
+         timing_post_trial: 2000
+      };
+        experiment.push(question3);
+        
+
+        
+      var block2inst = {
+        type: "text",
+        text: "<p>You will now repeat the task from the first portion of the test.</p>" +
+              "<p>Press any key to start.</p>",
+        timing_post_trial: 2000
+      };
+        
+        experiment.push(block2inst);
+      
+      
+      
+      var block2 = $.extend(true, {}, block1);
+      block2.stimuli = block2Stimuli;
+
+      experiment.push(block2);
+      
+      console.log(block1.stimuli);
+      console.log(block2.stimuli);
+
+      var questionnaire = {
+        type: "survey-text",
+        preamble: ['The following is a questionnaire to gauge your musical experience.'],
+        questions: [[
+        'Have you ever played a musical instrument?',
+        'What would you consider your primary instrument? If you do not have any musical training, you may leave this question blank.',
+        'At what age did you first begin musical instruction? If you do not have any musical training, you may leave this question blank.',
+        'Do you have absolute pitch? (Absolute pitch is generally defined as the ability to name or produce any musical note without the aid of a reference note)'
+        ]],
+        on_finish: function () {
+          var csvData = jsPsych.data.dataAsCSV();
+          console.log(csvData);
+          var formData = {
+            exp: "TRITONE_1",  // comment out for testing
+            // exp: "TEST",  // uncomment for testing
+            subj: subjectID,
+            results: csvData
+          };
+          $.post(
+            "http://perfectpitchstudies.pythonanywhere.com/data",
+            formData
+          );
+          $.post(
+            "http://svanhedger.pythonanywhere.com/data",
+            formData
+          );
+        }
+      };
+      
+      experiment.push(questionnaire);
+      
+      var debrief = {
+        type: "text",
+        text: "This concludes the experiment. Thank you for your participation!"
+      };
+      
+        experiment.push(debrief);
+
+      
+      jsPsych.init({
+        experiment_structure: experiment
+      });
+    </script>
+  </body>
+</html>
