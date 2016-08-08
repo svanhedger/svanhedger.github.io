@@ -954,15 +954,14 @@
         type: "survey-text",
         preamble: ['The following is a questionnaire to gauge your musical experience as well as some basic demographic information.'],
         questions: [[
-        'What is your gender? (You may opt to answer "prefer not to answer.")',
-        'What is your race/ethnicity?',
+        'What is your gender? (Please type "M", "F", or "prefer not to answer")',
         'What is your age?',
-        'Had you heard any of this music before? If so, which of the three sections was familiar?',
-        'Have you ever played a musical instrument?',
+        'Have you heard any of the music used in this study before?',
+		'How many sections of music did you listen to in this experiment?',
         'What would you consider your primary instrument? If you do not have any musical training, you may leave this question blank.',
         'At what age did you first begin musical instruction? If you do not have any musical training, you may leave this question blank.',
-        'How many years total have you played/did you play a musical instrument?',
-        'Do you have absolute pitch? (Absolute pitch is generally defined as the ability to name or produce any musical note without the aid of a reference note)'
+        'How many years total have you played/did you play a musical instrument? If you do not have any musical training, please type "0".',
+        'Do you have absolute pitch? (Absolute pitch is the ability to name or produce any musical note "out of thin air.")'
         ]],
         on_finish: function () {
           var csvData = jsPsych.data.dataAsCSV();
