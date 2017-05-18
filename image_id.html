@@ -28,6 +28,7 @@
     <script>
       var i;
       var subjectID;
+	  var image_ID;
       var folder = "camo/";
       
       var timestamp = Date.now();
@@ -38,13 +39,14 @@
         subjectID = timestamp;
       }
       jsPsych.data.addProperties({subject: subjectID});
+	
       
       var experiment = [];
       
       var consent = {
         type: "single-stim",
         stimuli: ["camo/consent.bmp"],
-        prompt: '<p><p style="font-weight:bold;"> Please wait for the consent form to load. If you agree, please press any key to continue on to the study.</p>',
+        prompt: '<p><p style="font-weight:bold;"> Please wait for the consent form to load. If you agree, press any key to continue.</p>',
         timing_post_trial: 1000
       };
       
@@ -168,6 +170,8 @@
       
     for(var i=0; i < rand_img_trials.length; i++){
 	
+
+	
 	    var fixation = {
         type: "multi-stim-multi-response",
         stimuli: [["***", "**", "*"]],
@@ -179,6 +183,9 @@
         timing_post_trial: 0
       };
 
+	  
+	  	
+	  
       var response = {
           type: "survey-text",
 		  preamble: [rand_img_trials[i]],
@@ -189,9 +196,20 @@
 		  columns: [40],
           timing_post_trial: 0
         };
-        
+	
+	var imagename = {
+		type: "single-stim",
+		stimuli: [rand_img_trials[i]],
+		is_html: true,
+		choices: [],
+		timing_stim: 1,
+		timing_response: 1,
+		response_ends_trial: false
+		};
+   
         experiment.push(fixation);
         experiment.push(response);
+		experiment.push(imagename);
       }
  
 
@@ -317,9 +335,20 @@ var rand_orig_trials = jsPsych.randomization.repeat(orig_stimuli,1);
 		  columns: [40],
           timing_post_trial: 0
         };
+		
+	var imagename = {
+		type: "single-stim",
+		stimuli: [rand_img_trials[i]],
+		is_html: true,
+		choices: [],
+		timing_stim: 1,
+		timing_response: 1,
+		response_ends_trial: false
+		};
         
         experiment.push(fixation);
         experiment.push(response_orig);
+		experiment.push(imagename);
       }	  
 	  
 	  
