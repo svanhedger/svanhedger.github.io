@@ -67,7 +67,7 @@
         stimuli: [folder + "Example1.jpg"],
         prompt: '<p><p style="font-weight:bold;">This image is similar to the ones you will be identifying. As you can see, it is quite difficult to make out.</p>' +
 		'<p><p style="font-weight:bold;">Press any key to continue.</p>',
-	  }
+	  };
       
 	  experiment.push(example1);
       
@@ -77,7 +77,7 @@
         prompt: '<p><p style="font-weight:bold;">When comparing the distorted image to the original image, the object of the picture becomes clearer.</p>' +
 		'<p><p style="font-weight:bold;">In the main task, you will not be shown the original images. You will have to make your decision based on the distorted image alone.</p>' +
 		'<p><p style="font-weight:bold;">(Press any key to begin).</p>',
-	  }
+	  };
   
       experiment.push(example2);
   
@@ -162,7 +162,7 @@
 '<img src="camo/c_r_78.bmp"></img>',
 '<img src="camo/c_r_79.bmp"></img>',
 '<img src="camo/c_r_80.bmp"></img>'
- ]
+ ];
   
     var rand_img_trials = jsPsych.randomization.repeat(img_stimuli,1);
       
@@ -183,7 +183,7 @@
           type: "survey-text",
 		  preamble: [rand_img_trials[i]],
           questions: [[
-          '<p style="font-weight:bold;">In a few words, please tell us what you think what this image contains. If you are not sure, please make your best guess. <p></p> Click "Submit" to advance to the next trial.',
+          '<p style="font-weight:bold;">In a word or two, please tell us what you think what this image contains. If you are not sure, please make your best guess. <p></p> Click "Submit" to advance to the next trial.',
         ]],
 		  rows: [10],
 		  columns: [40],
@@ -290,7 +290,7 @@
 '<img src="camo/o_r_79.bmp"></img>',
 '<img src="camo/o_r_80.bmp"></img>'
 
- ]  
+ ]  ;
 	  
 var rand_orig_trials = jsPsych.randomization.repeat(orig_stimuli,1);
       
@@ -311,7 +311,7 @@ var rand_orig_trials = jsPsych.randomization.repeat(orig_stimuli,1);
           type: "survey-text",
 		  preamble: [rand_orig_trials[i]],
           questions: [[
-          '<p style="font-weight:bold;">In a few words, please tell us what you think what this image contains. If you are not sure, please make your best guess. <p></p> Click "Submit" to advance to the next trial.',
+          '<p style="font-weight:bold;">In a word or two, please tell us what you think what this image contains. If you are not sure, please make your best guess. <p></p> Click "Submit" to advance to the next trial.',
         ]],
 		  rows: [10],
 		  columns: [40],
@@ -331,7 +331,7 @@ var rand_orig_trials = jsPsych.randomization.repeat(orig_stimuli,1);
         questions: [[
           'What is your gender? If you prefer not to answer, please type "prefer not to answer."',
 		  'What is your age (in years)?',
-          'Do you have any comments, questions, or suggestions regarding this study?'
+          'Do you have any comments, questions, or suggestions regarding this part of the study?'
         ]],
         on_finish: function () {
           var csvData = jsPsych.data.dataAsCSV();
@@ -358,9 +358,12 @@ var rand_orig_trials = jsPsych.randomization.repeat(orig_stimuli,1);
       var goodbye = {
         type: "single-stim",
         stimuli: function () {
-          var pageText = '<p><p style="font-weight:bold;">This concludes the experiment. Thank you for your participation.</p>' +
-                         '<p>Below is your subject ID. Please copy it.</p>' +
-                         '<p>' + subjectID + '</p>';
+          var pageText = '<p><p style="font-weight:bold;">You are now done with the image identification portion of the experiment. Thank you for your responses.</p>' +
+                         '<p>Below is your personalized code. </p>' +
+						 '<p>' + subjectID + '</p>' +
+						 '<p><p style="font-weight:bold;">Please copy this code and then click on the link below to continue to the final part of the experiment:</p>' +
+						 '<p><a target=_blank href=http://ssd.az1.qualtrics.com/jfe/form/SV_1NUbHpJueWpIN5H>MTQ</a></p>';
+                         
           return [pageText];
         },
         is_html: true,
