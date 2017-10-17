@@ -14,24 +14,60 @@
   </head>
   <body>
     <script>
-
+      /*
+       * Links to this page should appear similar to the following:
+       * http://environmental-audition-studies.github.io/mturk_backward_digit_span.html?MID=1234&session=1&cc1=2345&cc2=3456
+       */
+      
+      // var useAudio = false;
       var useAudio = true;
       
       var subjectID;
-
+      var session = 1;
+      var cc1 = "";
+      var cc2 = "";
+      var continuationCode = "";
       var currentDigitList;
       var reversedDigitString;
       var wasCorrect = true;
       var totalCorrect = 0;
       var totalTrials = 0;
       var folder = "digits/";
-
+      
+      var queryPair;
+      var queryString = location.search.substring(1);
+      var queryPairs = queryString.split("&");
+      for (var i = 0; i < queryPairs.length; i += 1) {
+        queryPair = queryPairs[i].split("=");
+        if (queryPair.length === 2) {
+          if (queryPair[0] === "MID") {  // exact search for each URL parameter
+            subjectID = queryPair[1];
+          } else if (queryPair[0] === "session") {
+            session = Number(queryPair[1]);
+          } else if (queryPair[0] === "cc1") {
+            cc1 = queryPair[1];
+          } else if (queryPair[0] === "cc2") {
+            cc2 = queryPair[1];
+          }
+        }
+      }
+      
+      if (session === 1) {
+        continuationCode = "2" + cc1 + "8";
+      } else if (session === 2) {
+        continuationCode = "7" + cc2 + "4";
+      }
       
       var timestamp = Date.now();
-	  subjectID = timestamp;
+      if (!subjectID) {
+        subjectID = timestamp + "-no-MID";
+      }
       
       jsPsych.data.addProperties({
-        subject: subjectID
+        subject: subjectID,
+        session: session,
+        cc1: cc1,
+        cc2: cc2
       });
       
       if (useAudio) {
@@ -126,10 +162,9 @@
       
       var welcome = {
         type: "text",
-        text: '<p>Welcome to the "digit span" task.</p>' +
+        text: '<p>Welcome to the memory task.</p>' +
               instructions +
-              '<p>For example, if you heard the digits "one, two, three," you would type in "321"</p>' +
-			  '<p>To ensure high quality data, it is very important that you do not use any memory aid (e.g., pen and paper). Please do the task solely in your head.</p>' +
+              '<p>To ensure high quality data, it is very important that you do not use any memory aid (e.g., pen and paper). Please do the task solely in your head.</p>' +
               '<p>When you are ready to begin, press Enter.</p>',
         timing_post_trial: 0,
         cont_key: [13]
@@ -166,7 +201,7 @@
               response_ends_trial: false,
               timing_post_trial: 0
             };
-            questions = [['Please type the digits you just heard in reverse order (starting from the last digit and ending on the first digit). Backspace has been disabled so enter the digits carefully.']];
+            questions = [['Please type the digits you just heard in reverse order (starting from the last digit and ending on the first digit). Backspace has been disabled so enter the digits carefully. You may press Enter to submit your response.']];
           } else {
             stimSeq = {
               type: "single-stim",
@@ -176,7 +211,7 @@
               response_ends_trial: false,
               timing_post_trial: 100
             };
-            questions = [['Please type the digits you just saw in reverse order (starting from the last digit and ending on the first digit). Backspace has been disabled so enter the digits carefully.']];
+            questions = [['Please type the digits you just saw in reverse order (starting from the last digit and ending on the first digit). Backspace has been disabled so enter the digits carefully. You may press Enter to submit your response']];
           }
         
           var response = {
@@ -225,15 +260,23 @@
           var formData = {
             exp: "KIM_BDS",  // comment out for testing
             // exp: "TEST",  // uncomment for testing
-            subj: subjectID,
+            subj: subjectID + "-session" + session,
             results: csvData
           };
           $.post(
             "http://perfectpitchstudies.pythonanywhere.com/data",
             formData
           );
-          $.post(
+		  $.post(
             "http://svanhedger.pythonanywhere.com/data",
+            formData
+          );
+          $.post(
+            "http://205.208.68.176/data",
+            formData
+          );
+          $.post(
+            "http://205.208.93.97/data",
             formData
           );
         }
@@ -244,12 +287,11 @@
       var goodbye = {
         type: "single-stim",
         stimuli: function () {
-          var pageText =  '<p>Thank you for completing the task. Your participant code is displayed below:</p>' +
-                         '<p>' + subjectID + '</p>' +
-                         '<p>Please make sure that the experimenter copies down this code.</p>' +
-                         '<p>Afterwards, you may close out of this page.</p>' +
-						 '<p>' + totalCorrect + ' / ' + totalTrials + '</p>';
-                        
+          var pageText = // '<p>You got ' + totalCorrect + ' out of ' + totalTrials + ' correct.</p>' +
+                         '<p>Thank you for completing the task. The "continuation code" you need to proceed in the survey is displayed below:</p>' +
+                         '<p>' + continuationCode + '</p>' +
+                         '<p>You must enter this code into the space provided in the survey to continue.</p>' +
+                         '<p>Afterwards, please close out of this page.</p>';
           return [pageText];
         },
         is_html: true,
