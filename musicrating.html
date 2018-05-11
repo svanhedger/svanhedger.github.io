@@ -5,6 +5,7 @@
     <script src="jspsych-6.0.2/jspsych.js"></script>
     <script src="jspsych-6.0.2/plugins/jspsych-html-keyboard-response.js"></script>
 	<script src="jspsych-6.0.2/plugins/jspsych-audio-keyboard-response.js"></script>
+	<script src="jspsych-6.0.2/plugins/jspsych-audio-button-response.js"></script>
 	<script src="jspsych-6.0.2/plugins/jspsych-external-html.js"></script>
 	<script src="jspsych-6.0.2/plugins/jspsych-html-button-response.js"></script>
 	<script src="jspsych-6.0.2/plugins/jspsych-html-slider-response.js"></script>
@@ -30,7 +31,7 @@ jsPsych.data.addProperties({rand_id: identifier});
 /*define welcome message trial */
 	  var welcome = {
 		  type: "html-keyboard-response",
-		  stimulus: "Welcome to the study.</p>On the next screen you will be presented with a consent form. Please read through the form carefully before agreeing to participate in the study."
+		  stimulus: "Welcome to the study.</p>On the next screen you will be presented with a consent form. Please read through the form carefully before agreeing to participate in the study.<p>(Press any key to continue)</p>"
 	  };
 
 	  timeline.push(welcome);
