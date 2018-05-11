@@ -397,7 +397,8 @@ function saveData(filename, filedata){
 	  jsPsych.init ({
 		  timeline: timeline,
 		  on_finish: function(){ saveData('subj_'+identifier+'.csv', jsPsych.data.get().csv()); },
-		  preload_audio: audio
+		  preload_audio: audio, 
+		  use_webaudio: false
 
 	  })
 	  </script>
