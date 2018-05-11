@@ -29,16 +29,45 @@ jsPsych.data.addProperties({rand_id: identifier});
 /*define welcome message trial */
 	  var welcome = {
 		  type: "html-keyboard-response",
-		  stimulus: "Welcome to the experiment. Press any key to begin."
+		  stimulus: "Welcome to the study.</p>On the next screen you will be presented with a consent form. Please read through the form carefully before agreeing to participate in the study."
 	  };
 
 	  timeline.push(welcome);
+
+/*************/
+/** CONSENT **/
+/*************/
+
+/** present consent as a separate html file, must agree and click on 'start' button to continue **/
+
+var consent_trial = {
+  type:"external-html",
+  url: "consent15.html", //file should be in same location as this script
+  cont_btn: "start"
+};
+
+/** push the consent screen to the timeline **/
+timeline.push(consent_trial);
+
+
+/*define welcome message trial */
+	  var audio_calibration = {
+		  type: "audio-button-response",
+		  stimulus: "melody/volumetest.mp3",
+		  prompt: "<p>Please adjust your volume so that the currently playing sound is at a comfortable listening level.</p>",
+		  choices: ['Continue']
+	  };
+
+	  timeline.push(audio_calibration);
+
 	  
 /* enter fullscreen mode */
 timeline.push({
   type: 'fullscreen',
   fullscreen_mode: true
 });
+
+
 
 /*instructions*/
 	  var instructions = {
