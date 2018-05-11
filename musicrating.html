@@ -56,8 +56,8 @@ timeline.push(consent_trial);
 	  var audio_calibration = {
 		  type: "audio-button-response",
 		  stimulus: "melody/volumetest.mp3",
-		  prompt: "<p>Please adjust your volume so that the currently playing sound is at a comfortable listening level.</p>",
-		  choices: ['Continue']
+		  prompt: "<p>Please adjust your volume so that the currently playing sound is at a comfortable listening level.</p>Once you have adjusted your volume, select the instrument that you hear to continue.</p>",
+		  choices: ['Violin', 'Piano', 'Trumpet', 'Guitar']
 	  };
 
 	  timeline.push(audio_calibration);
@@ -91,7 +91,8 @@ var audio = ['melody/1_1.mp3', 'melody/1_2.mp3', 'melody/1_3.mp3', 'melody/1_4.m
 'melody/4_1.mp3','melody/4_2.mp3','melody/4_3.mp3','melody/4_4.mp3','melody/4_5.mp3','melody/4_6.mp3','melody/4_7.mp3',
 'melody/5_1.mp3','melody/5_2.mp3','melody/5_3.mp3','melody/5_4.mp3','melody/5_5.mp3','melody/5_6.mp3','melody/5_7.mp3',
 'melody/6_1.mp3','melody/6_2.mp3','melody/6_3.mp3','melody/6_4.mp3','melody/6_5.mp3','melody/6_6.mp3','melody/6_7.mp3',
-'melody/7_1.mp3','melody/7_2.mp3','melody/7_3.mp3','melody/7_4.mp3','melody/7_5.mp3','melody/7_6.mp3','melody/7_7.mp3', 'melody/volumetest.mp3'
+'melody/7_1.mp3','melody/7_2.mp3','melody/7_3.mp3','melody/7_4.mp3','melody/7_5.mp3','melody/7_6.mp3','melody/7_7.mp3', 
+'melody/volumetest.mp3'
 			];
 			
 
@@ -378,7 +379,7 @@ var qE = {
           var csvData = jsPsych.data.get().csv();
           console.log(csvData);
           var formData = {
-            exp: "TEST",  // comment out for testing
+            exp: "BITTERSWEET",  // comment out for testing
             // exp: "TEST",  // uncomment for testing
             subj: identifier,
             results: csvData
