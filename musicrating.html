@@ -187,7 +187,7 @@ var bittersweet = {
 	type: "image-slider-response",
 	prompt: "<p> </p>",
 	stimulus: "melody/bittersweet2.jpg",
-	labels: ['not at all', 'slightly', 'moderately', 'extremely'],
+	labels: ['not at all', 'slightly', 'moderately', 'very'],
 	start: 0,
 	response_ends_trial: true, 
 	data: {term: 'bittersweet'}
@@ -197,7 +197,7 @@ var sorrow = {
 	type: "image-slider-response",
 	prompt: "<p> </p>",
 	stimulus: "melody/sorrow2.jpg",
-	labels: ['not at all', 'slightly', 'moderately', 'extremely'],
+	labels: ['not at all', 'slightly', 'moderately', 'very'],
 	start: 0,
 	response_ends_trial: true,
 	data: {term: 'sorrow'}
@@ -207,20 +207,20 @@ var joy = {
 	type: "image-slider-response",
 	prompt: "<p> </p>",
 	stimulus: "melody/joy2.jpg",
-	labels: ['not at all', 'slightly', 'moderately', 'extremely'],
+	labels: ['not at all', 'slightly', 'moderately', 'very'],
 	start: 0,
 	response_ends_trial: true,
 	data: {term: 'joy'}
 				};
 				
-var nostalgia = {
+var carefree = {
 	type: "image-slider-response",
 	prompt: "<p> </p>",
-	stimulus: "melody/nostalgia2.jpg",
-	labels: ['not at all', 'slightly', 'moderately', 'extremely'],
+	stimulus: "melody/carefree2.jpg",
+	labels: ['not at all', 'slightly', 'moderately', 'very'],
 	start: 0,
 	response_ends_trial: true,
-	data: {term: 'nostalgia'}
+	data: {term: 'carefree'}
 				};
 
 /* define liking trial separately (always comes at the end of the procedure */
@@ -229,7 +229,7 @@ var liking = {
 	type: "image-slider-response",
 	stimulus: "melody/blank2.jpg",
 	prompt: "<p>How much did you <em>like</em> the melody?</p>",
-	labels: ['not at all', 'slightly', 'moderately', 'extremely'],
+	labels: ['not at all', 'slightly', 'moderately', 'very'],
 	start: 0,
 	response_ends_trial: true,
 	data: {term: 'liking'}
@@ -240,7 +240,7 @@ var liking = {
 /* define the procedures for the different harmonizations */
 /* ****************************************************** */		
 
-var ratings = [joy, bittersweet, sorrow, nostalgia];
+var ratings = [joy, bittersweet, sorrow, carefree];
 
 /* shuffle orderings of the four terms */
 var shuffled_ratings1 = jsPsych.randomization.shuffle(ratings);
@@ -374,10 +374,10 @@ var qE = {
   type: 'survey-text',
   questions: [{prompt: 'Joyful'}, 
 			  {prompt: 'Sorrowful'},
-			  {prompt: 'Nostalgic'}, 
+			  {prompt: 'Carefree'}, 
 			  {prompt: 'Bittersweet'}
 			  ],
-  preamble: ['<p>In this study, you assessed the extent to which each melody was <em>joyful</em>, <em>sorrowful</em>, <em>nostalgic</em>, and <em>bittersweet</em>.</p>' +
+  preamble: ['<p>In this study, you assessed the extent to which each melody was <em>joyful</em>, <em>sorrowful</em>, <em>carefree</em>, and <em>bittersweet</em>.</p>' +
 '<p>Using the space provided below, list a single piece of music (outside of this study) that you most strongly associate with each term.</p>' +
 '<p>Please try to be as specific as possible (providing artist/composer and/or song title, if possible). You are allowed to search the internet to find song details if necessary.</p>'],
   on_finish: function () {
