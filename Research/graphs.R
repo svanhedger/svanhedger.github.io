@@ -1,0 +1,39 @@
+setwd("D:/Dropbox/CV and Website/Website Materials/Western Website/Research")
+
+library(ggplot2)
+library(dplyr)
+
+cog2015 <- read.csv("cog2015fig.csv")
+head(cog2015)
+cog2015$Experiment <- as.factor(cog2015$Experiment)
+
+cog2015 <- cog2015 %>%
+  filter(aWM > -2)
+
+
+cog2015.fig <- ggplot(cog2015, aes(x = aWM, y = Posttest)) +
+  geom_point(aes(color = Experiment, shape = Experiment), size = 3, alpha = 0.5) +
+  stat_smooth(method="lm",se=TRUE, alpha = 0.2, color = "grey50") +
+  labs(x = "aWM (Normalized)", y = "Post-Training AP Accuracy") +
+  annotate("text", x = 1.1, y = -0.1, label = "r(44) = .499, p = .004") +
+  theme(axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 10), 
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        title = element_text(size = 16), 
+        plot.background = element_blank(), 
+        panel.background = element_blank(),
+        axis.line = element_line(color = "black", size=1),
+        legend.position=c(0.25, 0.9),
+        legend.title = element_text(size=12),
+        legend.box = "horizontal",
+        legend.text=element_text(size=10),
+        legend.key.size = unit(0.5, "line"),
+        legend.background = element_rect(color = "black"))
+
+
+cog2015.fig
+
+png("Cog2015Fig.png", units = "in", height = 4, width = 5, res = 300)
+cog2015.fig
+dev.off()
